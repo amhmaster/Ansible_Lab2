@@ -1,0 +1,26 @@
+#!/usr/bin ansible-playbook
+---
+- name: Deploy Docker Application
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Login DockerHub
+      docker_login:
+        username: xxxxx
+        password: xxxxx
+    
+
+    - name: Pull Docker image from Docker Hub
+      docker_image:
+        name: docker-hub-repo/image-name
+        tag: latest
+        source: pull
+        state: present
+
+    - name: Run Docker container
+      docker_container:
+        name: my-nodejs-app
+        image: docker-hub-repo/image-name:tag
+        ports:
+          - "1111:80"
